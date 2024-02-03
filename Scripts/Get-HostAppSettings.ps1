@@ -59,4 +59,3 @@ function Get-InstanceGuid{
     }
     return $result
 }
-Get-InstanceGuid
