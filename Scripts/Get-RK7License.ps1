@@ -31,7 +31,9 @@ return $result
     )
 
     #Получение кода пользователя
-    $md5=Get-MD5toAuthRequest -login $login -password $password -token $token
+    $md5_1=Get-Hash($login+$password)
+    $md5_2=Get-Hash($token)
+    $md5=$login+';'+$md5_1+';'+$md5_2
  
     #Преобразование кода пользователя в Base64
     $base64=ToBase64 $md5
