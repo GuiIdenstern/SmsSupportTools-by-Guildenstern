@@ -52,10 +52,10 @@ function Get-SaleObjectCode {
     return $result
 }
 
-function Get-InstanceGuid{
-    $result = (Get-AppSettings).RKeeperSettings.InstanceGuid
+function Get-ProductGuid{
+    $result = (Get-AppSettings).RKeeperSettings.ProductGuid
     if([String]::IsNullOrWhiteSpace($result)){
-        Write-Error -Message "InstanceGuid is Null" -ErrorAction Stop
+        Write-Error -Message "ProductGuid is Null" -ErrorAction Stop
     }
     return $result
 }
