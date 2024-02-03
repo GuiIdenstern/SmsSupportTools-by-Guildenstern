@@ -45,10 +45,18 @@ function Get-Recievers {
 }
 
 function Get-SaleObjectCode {
-    [string]$result = (Get-AppSettings).RKeeperSettings.SaleObjectCode
+    $result = (Get-AppSettings).RKeeperSettings.SaleObjectCode
     if([String]::IsNullOrWhiteSpace($result)){
         Write-Error -Message "SaleObjectCode is Null" -ErrorAction Stop
     }
-    return (Get-AppSettings).RKeeperSettings.SaleObjectCode
+    return $result
 }
-Get-SaleObjectCode
+
+function Get-InstanceGuid{
+    $result = (Get-AppSettings).RKeeperSettings.InstanceGuid
+    if([String]::IsNullOrWhiteSpace($result)){
+        Write-Error -Message "InstanceGuid is Null" -ErrorAction Stop
+    }
+    return $result
+}
+Get-InstanceGuid
