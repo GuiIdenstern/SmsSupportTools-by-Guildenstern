@@ -11,7 +11,10 @@
         [string]$password = 'bMj,4kYH'
     )
     
+    #restCode (код ресторана)
     [string]$num_object=Get-SaleObjectCode
+
+    #GUID продукта (R-Keeper модуль XML-интерфейс для Приложения 12 мес ПО)
     [string]$guid=Get-ProductGuid
 
 
