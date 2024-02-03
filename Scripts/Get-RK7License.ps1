@@ -1,15 +1,19 @@
 . '.\ToBase64.ps1'
 . '.\Get-Hash.ps1'
+. '.\Get-HostAppSettings.ps1'
+
+[string]$token = 'f72246a4-a65d-4715-a15d-a4f61d8eee59'
 
 #Возвращает id лизцензии RKeeper7, или код ошибки
-    function Get-RK7License{
+    function Get-RK7LicenseId{
     param(
         [string]$login = 'r.biktimirov@smartmealservice.com',
-        [string]$password = 'bMj,4kYH',
-        [string]$token = 'f72246a4-a65d-4715-a15d-a4f61d8eee59',
-        [string]$num_object = '126750212',
-        [string]$guid = '655cee55-7bcd-4826-b6e0-a8ccf2017ef3'
+        [string]$password = 'bMj,4kYH'
     )
+    
+    [string]$num_object=Get-SaleObjectCode
+    [string]$guid=Get-ProductGuid
+
 
     #Получение кода пользователя
     $md5_1=Get-Hash($login+$password)
@@ -46,8 +50,5 @@
 $args = @{
     login = 'r.biktimirov@smartmealservice.com'
     password = 'bMj,4kYH'
-    token = 'f72246a4-a65d-4715-a15d-a4f61d8eee59'
-    num_object = '126750212'
-    guid = '655cee55-7bcd-4826-b6e0-a8ccf2017ef3'
   }
-Get-RK7License @args
+Get-RK7LicenseId @args
