@@ -4,48 +4,58 @@ $apps_path="C:\Users\mitya\Documents\PowerShell\Projects\SmsSupportTools-by-Guil
 
 
 #Возвращает настройки хоста
-function Get-AppSettings{
+function Get-HostAppSettings{
     #Если переменная с настройками не создана, создает ее
-    if ($_APPSETTINGS -like $null){
-        $Global:_APPSETTINGS=Get-Content $apps_path|ConvertFrom-Json -Depth 10
+    if ($_HOSTAPPSETTINGS -like $null){
+
+        #Возвращает ошибку если файл не найден
+        if(Test-Path($apps_path)){
+            $Global:_HOSTAPPSETTINGS=Get-Content $apps_path|ConvertFrom-Json -Depth 10
+        }
+        else {
+            Write-Error -Message "File $apps_path not exist" -ErrorAction Stop
+        }
     }
 
    #Возвращает переменную с настройками 
-    return $_APPSETTINGS
+    return $_HOSTAPPSETTINGS
 }
 
 #Сохраняет настройки хоста
-function Set-AppSettings{
+function Set-HostAppSettings{
     #Возвращает ошибку, если переменная с настройкми не создана (позволяет избежать случайного обнуления)
-    if ($_APPSETTINGS -like $null){
-        Write-Error "AppSettings is not init"
+    if ($_HOSTAPPSETTINGS -like $null){
+        Write-Error -Message "HostAppSettings is not init" -ErrorAction Stop
     }
 
     else{
         #Создание резервной копии
-        Rename-Item -Path $apps_path -NewName 'OLD_appsettings.json'
+        #Если файл существует, создает его резервную копию, иначе нет. В теории при ненулевом APPSETTINGS этого быть не должно, но возможно если загрузить в него настройки и после этого удалить файл
+        if (Test-Path($apps_path)){
+            Move-Item -Path $apps_path -Destination (Add-PrefixToPath $apps_path) -Force
+        }
         #Сохранение настроек
-        ConvertTo-Json $_APPSETTINGS -Depth 10 |Set-Content -Path $apps_path
+        ConvertTo-Json $_HOSTAPPSETTINGS -Depth 10 |Set-Content -Path $apps_path
     }
 }
 
 #Возвращает имя терминала (Corpus_G)
 function Get-TerminalName{
-    return (Get-AppSettings).TerminalSettings.Address
+    return (Get-HostAppSettings).TerminalSettings.Address
 }
 
 #Возвращает получателей писем анализатора в BCC
 function Get-RecieversBCC {
-    return (Get-AppSettings).MonitoringServiceSettings.AnalyzerSettings.EmailSettings.ReceiversBCC
+    return (Get-HostAppSettings).MonitoringServiceSettings.AnalyzerSettings.EmailSettings.ReceiversBCC
 }
 
 #Возвращает получателей писем анализатора в Receivers
 function Get-Recievers {
-    return (Get-AppSettings).MonitoringServiceSettings.AnalyzerSettings.EmailSettings.Receivers
+    return (Get-HostAppSettings).MonitoringServiceSettings.AnalyzerSettings.EmailSettings.Receivers
 }
 
 function Get-SaleObjectCode {
-    $result = (Get-AppSettings).RKeeperSettings.SaleObjectCode
+    $result = (Get-HostAppSettings).RKeeperSettings.SaleObjectCode
     if([String]::IsNullOrWhiteSpace($result)){
         Write-Error -Message "SaleObjectCode is Null" -ErrorAction Stop
     }
@@ -53,7 +63,7 @@ function Get-SaleObjectCode {
 }
 
 function Get-ProductGuid{
-    $result = (Get-AppSettings).RKeeperSettings.ProductGuid
+    $result = (Get-HostAppSettings).RKeeperSettings.ProductGuid
     if([String]::IsNullOrWhiteSpace($result)){
         Write-Error -Message "ProductGuid is Null" -ErrorAction Stop
     }
