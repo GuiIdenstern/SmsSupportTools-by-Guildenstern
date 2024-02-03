@@ -1,24 +1,5 @@
-. '.\ToBase64 1.0.ps1'
-. '.\Get-Hash 1.0.ps1'
-
-#Возвращает код пользователя:  (userName + «;» + lowercase(md5(userName+password)) + «;» + lowercase(md5(token)))
-function Get-MD5toAuthRequest{
-param(
-    [string]$login,
-    [string]$password,
-    [string]$token
-)
-#Получение первой части кода пользователя
-$md5_1=Get-Hash($login+$password)
-
-#Получение второй части кода пользователя
-$md5_2=Get-Hash($token)
-
-#Получение кода пользователя
-$result=$login+';'+$md5_1+';'+$md5_2
-
-return $result
-}
+. '.\ToBase64.ps1'
+. '.\Get-Hash.ps1'
 
 #Возвращает id лизцензии RKeeper7, или код ошибки
     function Get-RK7License{
@@ -69,8 +50,4 @@ $args = @{
     num_object = '126750212'
     guid = '655cee55-7bcd-4826-b6e0-a8ccf2017ef3'
   }
-  <#>
-  yughjv
-  
-  #>
 Get-RK7License @args
