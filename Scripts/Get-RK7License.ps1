@@ -53,9 +53,4 @@
     if ($result_id -notlike $null) {return "License ID: $result_id"}
 }
 
-
-$args = @{
-    login = 'r.biktimirov@smartmealservice.com'
-    password = 'bMj,4kYH'
-  }
-Get-RK7LicenseId @args
+Get-RK7LicenseId
