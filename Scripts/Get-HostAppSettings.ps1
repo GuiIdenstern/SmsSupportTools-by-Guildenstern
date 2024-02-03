@@ -1,6 +1,6 @@
 
 #Путь до Host.appsettings
-$apps_path='C:\Users\mitya\Рабочий стол\Кутузовский Г\appsettings.json'
+$apps_path="C:\Users\mitya\Documents\PowerShell\Projects\SmsSupportTools-by-Guildenstern\test_appsettings.json"
 
 
 #Возвращает настройки хоста
@@ -44,5 +44,11 @@ function Get-Recievers {
     return (Get-AppSettings).MonitoringServiceSettings.AnalyzerSettings.EmailSettings.Receivers
 }
 
-#$_APPSETTINGS=$null
-Get-RecieversBCC
+function Get-SaleObjectCode {
+    [string]$result = (Get-AppSettings).RKeeperSettings.SaleObjectCode
+    if([String]::IsNullOrWhiteSpace($result)){
+        Write-Error -Message "SaleObjectCode is Null" -ErrorAction Stop
+    }
+    return (Get-AppSettings).RKeeperSettings.SaleObjectCode
+}
+Get-SaleObjectCode
