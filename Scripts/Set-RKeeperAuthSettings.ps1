@@ -28,7 +28,7 @@ function Set-RKeeperAuthSettings{
         Token = $token
     }
 
-    #Запись натсроек в файл
+    #Запись настроек в файл
     ConvertTo-Json $_SETTINGS -Depth 10 |Set-Content -Path $path
 }
 
